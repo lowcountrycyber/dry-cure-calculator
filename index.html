@@ -34,12 +34,13 @@
 
   /* ------ Top brand logo ------ */
   .brand{
-    display:flex; align-items:center; justify-content:center;
-    padding:8px 0 14px; border-bottom:1px solid rgba(239,68,68,.15); margin-bottom:12px;
+    padding:0 0 14px; border-bottom:1px solid rgba(239,68,68,.15); margin-bottom:12px;
   }
-  .brand a{display:inline-flex; align-items:center; gap:10px; text-decoration:none}
+  .brand a{display:block; text-decoration:none; width:100%}
+  /* match table width (100% of content area) */
   .brand img{
-    display:block; height:48px; width:auto; object-fit:contain; filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));
+    display:block; width:100%; height:auto; object-fit:contain;
+    border-radius:10px;
   }
 
   h1{
@@ -111,24 +112,22 @@
   .credit a{color:#f87171; text-decoration:none; border-bottom:1px solid rgba(248,113,113,.4)}
   .credit a:hover{color:#fecaca; border-bottom-color:#fecaca}
 
-  /* FOOTER banner */
+  /* FOOTER banner (image-only; match table width) */
   .powered{
     margin-top:12px; background:#000; border-radius:10px;
-    border:1px solid rgba(239,68,68,.3);
-    display:flex; align-items:center; justify-content:center;
-    padding:10px 12px;
+    border:1px solid rgba(239,68,68,.3); padding:0; overflow:hidden;
   }
-  .powered a{display:inline-flex}
-  .powered img{height:28px; width:auto; object-fit:contain}
+  .powered a{display:block; width:100%}
+  .powered img{display:block; width:100%; height:auto; object-fit:contain}
 </style>
 </head>
 <body>
   <div class="card">
 
-    <!-- Top brand logo (now links to Castle Road Barbecue) -->
+    <!-- Top brand logo (links to Castle Road Barbecue) -->
     <div class="brand">
       <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener" aria-label="Castle Road Barbecue">
-        <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png" alt="Castle Road Barbecue">
+        <img src="PATH/TO/hog-heaven-logo.png" alt="Castle Road Barbecue">
       </a>
     </div>
 
