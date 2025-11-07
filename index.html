@@ -30,11 +30,21 @@
   .card{
     width:min(760px,100%); background:var(--card); border-radius:14px;
     box-shadow:0 18px 40px rgba(0,0,0,.7), 0 0 0 1px rgba(239,68,68,.15);
-    padding:24px 22px 16px; position:relative; overflow:hidden;
+    padding:16px 22px 16px; position:relative; overflow:hidden;
+  }
+
+  /* ------ Top brand logo ------ */
+  .brand{
+    display:flex; align-items:center; justify-content:center;
+    padding:8px 0 14px; border-bottom:1px solid rgba(239,68,68,.15); margin-bottom:12px;
+  }
+  .brand a{display:inline-flex; align-items:center; gap:10px; text-decoration:none}
+  .brand img{
+    display:block; height:48px; width:auto; object-fit:contain; filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));
   }
 
   h1{
-    margin:0 0 6px; font-size:26px; letter-spacing:.04em; text-transform:uppercase;
+    margin:4px 0 6px; font-size:26px; letter-spacing:.04em; text-transform:uppercase;
     color:var(--accent);
     text-shadow:0 0 10px rgba(239,68,68,.3), 0 0 2px rgba(239,68,68,.6);
   }
@@ -58,10 +68,11 @@
   }
   button:hover{background:var(--accent-dark)}
   button:active{transform:translateY(1px)}
+  button[disabled]{opacity:.5; cursor:not-allowed; box-shadow:none}
 
   .muted{color:var(--muted); font-size:12px}
 
-  /* ===== Table: fixed columns + horror accent ===== */
+  /* ===== Table ===== */
   .table-wrap{margin-top:14px}
   table{
     width:100%; border-collapse:separate; border-spacing:0;
@@ -96,13 +107,33 @@
     letter-spacing: .01em;
   }
 
-  footer{margin-top:12px; text-align:right; color:#fca5a5; font-size:12px}
-  footer a{color:#f87171; text-decoration:none; border-bottom:1px solid rgba(248,113,113,.4)}
-  footer a:hover{color:#fecaca; border-bottom-color:#fecaca}
+  /* small developer credit */
+  .credit{margin-top:12px; text-align:right; color:#fca5a5; font-size:12px}
+  .credit a{color:#f87171; text-decoration:none; border-bottom:1px solid rgba(248,113,113,.4)}
+  .credit a:hover{color:#fecaca; border-bottom-color:#fecaca}
+
+  /* POWERED BY bar */
+  .powered{
+    margin-top:12px; background:#000; border-radius:10px;
+    border:1px solid rgba(239,68,68,.3);
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    padding:10px 12px;
+  }
+  .powered strong{letter-spacing:.08em; color:#fff}
+  .powered a{display:inline-flex; align-items:center; gap:8px; text-decoration:none}
+  .powered img{height:22px; width:auto; object-fit:contain}
 </style>
 </head>
 <body>
   <div class="card">
+
+    <!-- Top brand logo (placeholder) -->
+    <div class="brand">
+      <a href="#" aria-label="Hog Heaven Home">
+        <img src="PATH/TO/hog-heaven-logo.png" alt="Hog Heaven">
+      </a>
+    </div>
+
     <h1>Dry Cure Calculator</h1>
     <div class="sub">
       Cure #1 @ <strong>0.25%</strong> • <strong>Premix</strong> @ <strong>3.10%</strong>
@@ -110,9 +141,9 @@
     </div>
 
     <div class="grid" role="form" aria-label="dry cure form">
-      <label for="meat">Meat weight</label>
-      <input id="meat" type="number" min="0" step="0.01" value="10" />
-      <select id="unit">
+      <label for="meat">Meat Weight</label>
+      <input id="meat" type="number" min="0" step="0.01" value="0" inputmode="decimal" />
+      <select id="unit" aria-label="weight unit">
         <option value="lb" selected>lb (default)</option>
         <option value="kg">kg</option>
         <option value="g">g</option>
@@ -121,8 +152,8 @@
     </div>
 
     <div class="btns">
-      <button id="calcBtn">Calculate</button>
-      <span class="muted">Press Enter to calculate.</span>
+      <button id="calcBtn" disabled>Calculate</button>
+      <span id="hint" class="muted" aria-live="polite">Enter a weight to calculate.</span>
     </div>
 
     <div class="table-wrap">
@@ -143,9 +174,18 @@
       </table>
     </div>
 
-    <footer>
+    <div class="credit">
       Developed by <a href="https://lowcountrycyber.net" target="_blank" rel="noopener">Low Country Cyber Solutions LLC</a>
-    </footer>
+    </div>
+
+    <!-- POWERED BY strip with placeholder logo -->
+    <div class="powered" role="contentinfo">
+      <strong>POWERED&nbsp;BY</strong>
+      <a href="https://lowcountrycyber.github.io/" target="_blank" rel="noopener" aria-label="Low Country Cyber Solutions">
+        <img src="PATH/TO/lccs-logo.png" alt="LCCS Logo">
+        <span class="muted" style="color:#e5e7eb">Low Country Cyber Solutions LLC</span>
+      </a>
+    </div>
   </div>
 
 <script>
@@ -165,6 +205,7 @@
   const unitEl = $('#unit');
   const resultsEl = $('#results');
   const calcBtn = $('#calcBtn');
+  const hintEl = $('#hint');
 
   function toGrams(value, unit){
     switch(unit){
@@ -186,10 +227,16 @@
     return tr;
   }
 
+  function renderDisabledState(){
+    resultsEl.innerHTML = '';
+    calcBtn.disabled = true;
+    hintEl.textContent = 'Enter a weight to calculate.';
+  }
+
   function calculate(){
     const val = parseFloat(meatEl.value);
     if (isNaN(val) || val <= 0){
-      alert('Please enter a meat weight greater than zero.');
+      renderDisabledState();
       return;
     }
     const meat_g = toGrams(val, unitEl.value);
@@ -204,18 +251,36 @@
     const adjusted_plain_salt_g = Math.max(0, desired_salt_g - cure1_salt_g);
     const premix_g = adjusted_plain_salt_g + desired_sugar_g;
 
-    // Render table
+    // Render table (ORDER: Meat → Premix → Cure #1)
     resultsEl.innerHTML = '';
     resultsEl.appendChild(row('Meat (input)', meat_g, gToLb(meat_g)));
-    resultsEl.appendChild(row(`Cure #1 (${CURE1_PCT.toFixed(3)}% of meat)`, cure1_g, gToLb(cure1_g)));
     resultsEl.appendChild(row('Premix', premix_g, gToLb(premix_g)));
+    resultsEl.appendChild(row(`Cure #1 (${CURE1_PCT.toFixed(3)}% of meat)`, cure1_g, gToLb(cure1_g)));
+
+    // UI state
+    calcBtn.disabled = false;
+    hintEl.textContent = 'Press Enter to recalculate.';
+  }
+
+  // Enable button dynamically
+  function onInput(){
+    const val = parseFloat(meatEl.value);
+    calcBtn.disabled = !(val > 0);
+    if (val > 0){
+      hintEl.textContent = 'Press Enter to calculate.';
+    }else{
+      hintEl.textContent = 'Enter a weight to calculate.';
+      resultsEl.innerHTML = '';
+    }
   }
 
   calcBtn.addEventListener('click', calculate);
   document.addEventListener('keydown', (e) => { if(e.key === 'Enter') calculate(); });
+  meatEl.addEventListener('input', onInput);
+  unitEl.addEventListener('change', () => { if(parseFloat(meatEl.value)>0) calculate(); });
 
-  // initial render with defaults
-  calculate();
+  // initial: disabled state (weight defaults to 0)
+  renderDisabledState();
 })();
 </script>
 </body>
