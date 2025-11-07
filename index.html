@@ -7,7 +7,7 @@
 <style>
   /* ===== Friday the 13th theme (black + blood red) ===== */
   :root{
-    --bg:#000000;             /* pitch black */
+    --bg:#000000;             /* pitch black base (behind wood texture) */
     --card:#0a0a0a;           /* near-black panel */
     --ink:#e5e7eb;            /* light gray text */
     --muted:#9ca3af;          /* muted gray */
@@ -20,19 +20,25 @@
   }
 
   html,body{height:100%}
+
+  /* Wood background + subtle dark overlay to keep contrast */
   body{
-    margin:0;background:var(--bg);color:var(--ink);
+    margin:0;color:var(--ink);
     font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-    text-align:right; /* === right-justify everything === */
+    text-align:right; /* right-justify */
+    background:
+      linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+      url("https://castleroadbarbecue.com/wp-content/uploads/2023/04/wood-bkg-for-castle-rd-3.png") center/cover fixed no-repeat,
+      var(--bg);
   }
 
   .wrap{min-height:100%;display:flex;flex-direction:column}
   .container{
     width:clamp(320px, 92vw, 980px);
-    margin:16px 16px 80px auto;   /* push to the RIGHT edge */
+    margin:16px 16px 80px auto;   /* push content to the RIGHT edge */
   }
 
-  /* Header banner */
+  /* Header banner (Hog Heaven) */
   .banner{
     background:#0b0b0b;border:1px solid var(--line);border-radius:14px;
     padding:14px;display:flex;justify-content:flex-end;align-items:center;margin-bottom:16px
@@ -44,7 +50,7 @@
     height:0;border:none;border-top:2px solid var(--line-strong);
     margin:18px 0;
   }
-  /* True print page breaks: add class="page-break" on an HR to force a new page when printing */
+  /* Real page breaks when printing */
   @media print{
     .page-break{break-before: page;}
     .powered, .credit{break-before: page;}
@@ -89,12 +95,15 @@
   .table td{padding:10px 12px;border-bottom:1px solid #121212;text-align:right}
   .meta{font-size:.8rem;color:var(--muted);text-align:right;margin-top:8px}
 
-  /* Footer badge */
+  /* Footer image (Ghost Cooks Powered By) */
   .powered{
-    width:100%;display:flex;justify-content:flex-end;align-items:center;gap:14px;
-    margin:28px 0 10px;font-weight:900;letter-spacing:4px;color:var(--accent);font-size:clamp(26px,5vw,44px)
+    width:100%;display:flex;justify-content:flex-end;align-items:center;
+    margin:28px 0 10px;
   }
-  .ghost-hat{filter:drop-shadow(0 0 6px rgba(239,68,68,.35))}
+  .powered img{
+    max-width:min(100%, 720px);height:auto;display:block;margin-left:auto;
+    filter:drop-shadow(0 0 6px rgba(239,68,68,.35));
+  }
   .credit{color:#8b8b8b;text-align:right;font-size:.85rem;margin-top:8px}
 </style>
 </head>
@@ -102,9 +111,11 @@
 <div class="wrap">
   <div class="container">
 
-    <!-- Brand banner (REPLACE src with client art) -->
+    <!-- Hog Heaven banner -->
     <div class="banner">
-      <img src="banner-hog-heaven.png" alt="Hog Heaven banner" />
+      <img
+        src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png"
+        alt="Hog Heaven — Signature Banner" />
     </div>
 
     <hr class="break">
@@ -115,7 +126,7 @@
 
       <div class="field-label">Meat Weight</div>
 
-      <!-- *** Stacked controls (number above, units below) *** -->
+      <!-- Stacked controls -->
       <div class="stacked">
         <input id="meat" class="input" type="number" step="0.01" min="0" placeholder="Enter weight (e.g., 75)" />
         <select id="unit" class="select" aria-label="Measurement Unit">
@@ -149,22 +160,23 @@
 
     <hr class="break page-break">
 
+    <!-- Ghost Cooks Powered By footer -->
     <div class="powered">
-      <span>POWERED BY</span>
-      <!-- REPLACE src with your ghost/chef logo -->
-      <img class="ghost-hat" src="lccs-ghost-hat.png" alt="LCCS Ghost Icon" width="64" height="64" />
+      <img
+        src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/GHOST-COOKS-Powered-BY-RED-scaled.png"
+        alt="Powered By — Ghost Cooks" />
     </div>
+
     <div class="credit">© <script>document.write(new Date().getFullYear())</script> Low Country Cyber Solutions LLC</div>
   </div>
 </div>
 
 <script>
-  // ===== Constants =====
+  /* ===== Math ===== */
   const PERCENT_PREMIX = 0.0310;  // 3.10%
   const PERCENT_CURE   = 0.0025;  // 0.25%
   const G_PER_LB = 453.59237;
 
-  // ===== Helpers =====
   const $ = (id)=>document.getElementById(id);
   const fmt = (v, d=2)=> isFinite(v) ? Number(v).toFixed(d) : '—';
 
@@ -198,11 +210,9 @@
     render(toGrams(w, u));
   }
 
-  // Wire up UI
   $('calc').addEventListener('click', calculate);
-  // keep explicit click to calc; no "Press Enter" hint
 
-  // Demo value
+  // Seed demo
   $('meat').value = '75';
   calculate();
 </script>
