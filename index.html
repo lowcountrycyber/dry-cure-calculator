@@ -32,29 +32,23 @@
     padding:16px 22px 16px; position:relative; overflow:hidden;
   }
 
-  /* ------ Top brand logo: full width to match table ------ */
+  /* ------ Top brand logo ------ */
   .brand{padding:0 0 14px; border-bottom:1px solid rgba(239,68,68,.15); margin-bottom:12px}
   .brand a{display:block; width:100%; text-decoration:none}
   .brand img{
-    display:block;
-    width:100%;
-    height:auto;
-    object-fit:contain;
-    border-radius:10px;
+    display:block; width:100%; height:auto; object-fit:contain; border-radius:10px;
   }
 
   /* ===== Wood band behind the widget ===== */
   .band{
-    margin:12px -10px 0;             /* slight edge bleed */
+    margin:12px -10px 0;
     padding:16px 12px;
     border-radius:10px;
     border:1px solid rgba(239,68,68,.15);
     background-image:
       linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.62)),
       url('https://castleroadbarbecue.com/wp-content/uploads/2023/04/wood-bkg-for-castle-rd-3.png');
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
+    background-size:cover; background-position:center; background-repeat:no-repeat;
   }
 
   h1{
@@ -66,28 +60,30 @@
   .sub strong{color:var(--ink)}
   .sub .note{color:var(--accent); opacity:.8}
 
-  .grid{display:grid; grid-template-columns: 1fr auto 140px; gap:12px; align-items:center}
-  .grid label{font-weight:700; color:var(--ink)}
+  /* ===== Compact 1-row form: label | number | unit | button ===== */
+  .grid{
+    display:grid;
+    grid-template-columns: auto 1fr 160px 140px;
+    gap:12px;
+    align-items:center;
+  }
+  .grid label{font-weight:700; color:var(--ink); white-space:nowrap}
   input[type="number"], select{
     width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:16px;
     background:#0f0f10; color:var(--ink); outline:none;
   }
   input[type="number"]:focus, select:focus{border-color:var(--accent); box-shadow:0 0 0 2px rgba(239,68,68,.25)}
+  select{min-width:140px}
 
-  .btns{
-    margin:12px 0 8px; display:flex; align-items:center; gap:10px; width:100%;
-  }
-  .btns button{
+  .calc-btn{
     appearance:none; border:0; border-radius:10px; padding:10px 14px; font-weight:800;
     background:var(--accent); color:#fff; cursor:pointer; letter-spacing:.02em;
     box-shadow:0 6px 18px rgba(239,68,68,.35);
-    margin-left:auto;           /* >>> push button to the far right <<< */
+    justify-self:end;   /* keep it right-aligned in the row */
   }
-  .btns button:hover{background:var(--accent-dark)}
-  .btns button:active{transform:translateY(1px)}
-  .btns button[disabled]{opacity:.5; cursor:not-allowed; box-shadow:none}
-
-  .muted{color:var(--muted); font-size:12px}
+  .calc-btn:hover{background:var(--accent-dark)}
+  .calc-btn:active{transform:translateY(1px)}
+  .calc-btn[disabled]{opacity:.5; cursor:not-allowed; box-shadow:none}
 
   /* ===== Table ===== */
   .table-wrap{margin-top:14px}
@@ -131,30 +127,31 @@
 
   /* ===== Footer banner ===== */
   .footer{
-    margin-top:16px;
-    padding-top:12px;
-    border-top:1px solid rgba(239,68,68,.15);
+    margin-top:16px; padding-top:12px; border-top:1px solid rgba(239,68,68,.15);
   }
   .footer a{display:block;width:100%;text-decoration:none}
-  .footer img{
-    display:block;
-    width:100%;
-    height:auto;
-    object-fit:cover;
-    border-radius:10px;
-  }
+  .footer img{display:block;width:100%;height:auto;object-fit:cover;border-radius:10px}
 
-  /* Small screens: keep layout tight and button right-aligned */
-  @media (max-width: 480px){
-    .grid{grid-template-columns: 1fr 1fr; grid-auto-rows:auto}
-    .grid label{grid-column:1 / -1}
+  /* Small screens: stack fields to prevent crowding */
+  @media (max-width: 560px){
+    .grid{
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "label label"
+        "number unit"
+        ". button";
+    }
+    .grid label{grid-area:label}
+    #meat{grid-area:number}
+    #unit{grid-area:unit}
+    .calc-btn{grid-area:button; justify-self:end; margin-top:6px}
   }
 </style>
 </head>
 <body>
   <div class="card">
 
-    <!-- Top brand logo (links to Castle Road Barbecue; full-width PNG) -->
+    <!-- Top brand logo -->
     <div class="brand">
       <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener" aria-label="Castle Road Barbecue">
         <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png" alt="Castle Road Barbecue">
@@ -169,6 +166,7 @@
         <span class="note">(auto salt adjustment)</span>
       </div>
 
+      <!-- Single-row form -->
       <div class="grid" role="form" aria-label="dry cure form">
         <label for="meat">Meat Weight</label>
         <input id="meat" type="number" min="0" step="0.01" value="0" inputmode="decimal" />
@@ -178,11 +176,7 @@
           <option value="g">g</option>
           <option value="oz">oz</option>
         </select>
-      </div>
-
-      <div class="btns">
-        <span id="hint" class="muted" aria-live="polite">Enter a weight to calculate.</span>
-        <button id="calcBtn" disabled>Calculate</button>
+        <button id="calcBtn" class="calc-btn" disabled>Calculate</button>
       </div>
 
       <div class="table-wrap">
@@ -208,7 +202,7 @@
       </div>
     </div>
 
-    <!-- ===== Footer banner ===== -->
+    <!-- Footer banner -->
     <div class="footer" aria-label="Castle Road Barbecue footer banner">
       <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener">
         <img
@@ -238,7 +232,6 @@
   const unitEl = $('#unit');
   const resultsEl = $('#results');
   const calcBtn = $('#calcBtn');
-  const hintEl = $('#hint');
 
   function toGrams(value, unit){
     switch(unit){
@@ -263,7 +256,6 @@
   function renderDisabledState(){
     resultsEl.innerHTML = '';
     calcBtn.disabled = true;
-    hintEl.textContent = 'Enter a weight to calculate.';
   }
 
   function calculate(){
@@ -290,21 +282,15 @@
     resultsEl.appendChild(row('Premix', premix_g, gToLb(premix_g)));
     resultsEl.appendChild(row(`Cure #1 (${CURE1_PCT.toFixed(3)}% of meat)`, cure1_g, gToLb(cure1_g)));
 
-    // UI state
+    // enable button after first valid calc to signal readiness
     calcBtn.disabled = false;
-    hintEl.textContent = 'Press Enter to recalculate.';
   }
 
-  // Enable button dynamically (kept on the right via CSS)
+  // Enable/disable button based on input
   function onInput(){
     const val = parseFloat(meatEl.value);
     calcBtn.disabled = !(val > 0);
-    if (val > 0){
-      hintEl.textContent = 'Press Enter to calculate.';
-    }else{
-      hintEl.textContent = 'Enter a weight to calculate.';
-      resultsEl.innerHTML = '';
-    }
+    if (!(val > 0)) resultsEl.innerHTML = '';
   }
 
   calcBtn.addEventListener('click', calculate);
@@ -312,7 +298,7 @@
   meatEl.addEventListener('input', onInput);
   unitEl.addEventListener('change', () => { if(parseFloat(meatEl.value)>0) calculate(); });
 
-  // initial: disabled state (weight defaults to 0)
+  // initial
   renderDisabledState();
 })();
 </script>
