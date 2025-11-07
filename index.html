@@ -5,18 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Dry Cure Calculator — LCCS</title>
 <style>
-  /* ===== Friday the 13th theme (black + blood red) ===== */
   :root{
-    --bg:#000000;             /* pitch black */
-    --card:#0a0a0a;           /* near-black panel */
-    --ink:#e5e7eb;            /* light gray text */
-    --muted:#9ca3af;          /* muted gray */
-    --accent:#ef4444;         /* BLOOD RED */
-    --accent-dark:#dc2626;    /* darker red (hover) */
-    --line:#1f2937;           /* deep divider */
-    --line-strong:#b91c1c;    /* red divider */
-    --row:#0b0b0b;            /* zebra row 1 */
-    --row-alt:#101010;        /* zebra row 2 */
+    --bg:#000000;
+    --card:#0a0a0a;
+    --ink:#e5e7eb;
+    --muted:#9ca3af;
+    --accent:#ef4444;
+    --accent-dark:#dc2626;
+    --line:#1f2937;
+    --line-strong:#b91c1c;
+    --row:#0b0b0b;
+    --row-alt:#101010;
   }
 
   html,body{height:100%}
@@ -32,18 +31,12 @@
     padding:16px 22px 16px; position:relative; overflow:hidden;
   }
 
-  /* ------ Top brand logo ------ */
   .brand{padding:0 0 14px; border-bottom:1px solid rgba(239,68,68,.15); margin-bottom:12px}
   .brand a{display:block; width:100%; text-decoration:none}
-  .brand img{
-    display:block; width:100%; height:auto; object-fit:contain; border-radius:10px;
-  }
+  .brand img{display:block; width:100%; height:auto; object-fit:contain; border-radius:10px}
 
-  /* ===== Wood band behind the widget ===== */
   .band{
-    margin:12px -10px 0;
-    padding:16px 12px;
-    border-radius:10px;
+    margin:12px -10px 0; padding:16px 12px; border-radius:10px;
     border:1px solid rgba(239,68,68,.15);
     background-image:
       linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.62)),
@@ -60,32 +53,33 @@
   .sub strong{color:var(--ink)}
   .sub .note{color:var(--accent); opacity:.8}
 
-  /* ===== Compact 1-row form: label | number | unit | button ===== */
+  /* === ONE ROW: label | number | unit | button === */
   .grid{
     display:grid;
-    grid-template-columns: auto 1fr 160px 140px;
-    gap:12px;
+    grid-template-columns: auto 1fr 180px 156px; /* widened unit & button columns */
+    gap:16px;                                    /* a bit more breathing room */
     align-items:center;
   }
   .grid label{font-weight:700; color:var(--ink); white-space:nowrap}
+
   input[type="number"], select{
+    box-sizing:border-box; /* lock sizing so borders/shadows don't crowd */
     width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:16px;
     background:#0f0f10; color:var(--ink); outline:none;
   }
   input[type="number"]:focus, select:focus{border-color:var(--accent); box-shadow:0 0 0 2px rgba(239,68,68,.25)}
-  select{min-width:140px}
+  select{min-width:170px} /* ensure the text fits without touching */
 
   .calc-btn{
-    appearance:none; border:0; border-radius:10px; padding:10px 14px; font-weight:800;
+    appearance:none; border:0; border-radius:10px; padding:10px 16px; font-weight:800;
     background:var(--accent); color:#fff; cursor:pointer; letter-spacing:.02em;
     box-shadow:0 6px 18px rgba(239,68,68,.35);
-    justify-self:end;   /* keep it right-aligned in the row */
+    justify-self:end;
   }
   .calc-btn:hover{background:var(--accent-dark)}
   .calc-btn:active{transform:translateY(1px)}
   .calc-btn[disabled]{opacity:.5; cursor:not-allowed; box-shadow:none}
 
-  /* ===== Table ===== */
   .table-wrap{margin-top:14px}
   table{
     width:100%; border-collapse:separate; border-spacing:0;
@@ -106,11 +100,7 @@
 
   tbody tr:nth-child(odd){background:var(--row)}
   tbody tr:nth-child(even){background:var(--row-alt)}
-
-  td{
-    padding:12px 14px; border-bottom:1px solid var(--line);
-    vertical-align:middle; color:var(--ink);
-  }
+  td{padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:middle; color:var(--ink)}
   tbody tr:last-child td{border-bottom:0}
 
   .num{
@@ -120,19 +110,15 @@
     letter-spacing: .01em;
   }
 
-  /* small developer credit */
   .credit{margin-top:12px; text-align:right; color:#fca5a5; font-size:12px}
   .credit a{color:#f87171; text-decoration:none; border-bottom:1px solid rgba(248,113,113,.4)}
   .credit a:hover{color:#fecaca; border-bottom-color:#fecaca}
 
-  /* ===== Footer banner ===== */
-  .footer{
-    margin-top:16px; padding-top:12px; border-top:1px solid rgba(239,68,68,.15);
-  }
+  .footer{margin-top:16px; padding-top:12px; border-top:1px solid rgba(239,68,68,.15)}
   .footer a{display:block;width:100%;text-decoration:none}
   .footer img{display:block;width:100%;height:auto;object-fit:cover;border-radius:10px}
 
-  /* Small screens: stack fields to prevent crowding */
+  /* Mobile stack */
   @media (max-width: 560px){
     .grid{
       grid-template-columns: 1fr 1fr;
@@ -140,6 +126,7 @@
         "label label"
         "number unit"
         ". button";
+      gap:12px;
     }
     .grid label{grid-area:label}
     #meat{grid-area:number}
@@ -150,15 +137,12 @@
 </head>
 <body>
   <div class="card">
-
-    <!-- Top brand logo -->
     <div class="brand">
       <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener" aria-label="Castle Road Barbecue">
         <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png" alt="Castle Road Barbecue">
       </a>
     </div>
 
-    <!-- Wood-backed band with the calculator UI -->
     <div class="band" aria-label="Dry Cure calculator banded section">
       <h1>Dry Cure Calculator</h1>
       <div class="sub">
@@ -166,7 +150,6 @@
         <span class="note">(auto salt adjustment)</span>
       </div>
 
-      <!-- Single-row form -->
       <div class="grid" role="form" aria-label="dry cure form">
         <label for="meat">Meat Weight</label>
         <input id="meat" type="number" min="0" step="0.01" value="0" inputmode="decimal" />
@@ -202,47 +185,39 @@
       </div>
     </div>
 
-    <!-- Footer banner -->
     <div class="footer" aria-label="Castle Road Barbecue footer banner">
       <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener">
-        <img
-          src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/GHOST-COOKS-Powered-BY-RED-scaled.png"
-          alt="Castle Road Barbecue — Hog Heaven"
-          loading="lazy"
-        />
+        <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/GHOST-COOKS-Powered-BY-RED-scaled.png" alt="Castle Road Barbecue — Hog Heaven" loading="lazy" />
       </a>
     </div>
-
   </div>
 
 <script>
 (() => {
-  // ---- constants & helpers ----
   const LB_TO_G = 453.59237;
   const OZ_TO_G = 28.349523125;
 
-  // Defaults (% of meat)
-  const CURE1_PCT = 0.25;   // Cure #1 flat percent of meat
+  const CURE1_PCT = 0.25;
   const SALT_PCT  = 1.75;
   const SUGAR_PCT = 1.35;
-  const CURE_NITRITE_PCT = 6.25;  // for salt fraction math only
+  const CURE_NITRITE_PCT = 6.25;
 
-  const $ = sel => document.querySelector(sel);
+  const $ = s => document.querySelector(s);
   const meatEl = $('#meat');
   const unitEl = $('#unit');
   const resultsEl = $('#results');
   const calcBtn = $('#calcBtn');
 
-  function toGrams(value, unit){
-    switch(unit){
-      case 'g':  return value;
-      case 'kg': return value * 1000;
-      case 'lb': return value * LB_TO_G;
-      case 'oz': return value * OZ_TO_G;
-      default:   return value * LB_TO_G;
+  function toGrams(v,u){
+    switch(u){
+      case 'g':  return v;
+      case 'kg': return v*1000;
+      case 'lb': return v*LB_TO_G;
+      case 'oz': return v*OZ_TO_G;
+      default:   return v*LB_TO_G;
     }
   }
-  function gToLb(g){ return g / LB_TO_G; }
+  const gToLb = g => g/LB_TO_G;
   const r2 = x => Math.round((+x + Number.EPSILON) * 100) / 100;
 
   function row(label, g, lb){
@@ -253,40 +228,32 @@
     return tr;
   }
 
-  function renderDisabledState(){
+  function renderDisabled(){
     resultsEl.innerHTML = '';
     calcBtn.disabled = true;
   }
 
   function calculate(){
     const val = parseFloat(meatEl.value);
-    if (isNaN(val) || val <= 0){
-      renderDisabledState();
-      return;
-    }
-    const meat_g = toGrams(val, unitEl.value);
+    if (isNaN(val) || val <= 0){ renderDisabled(); return; }
 
-    // Cure #1 (flat %)
+    const meat_g = toGrams(val, unitEl.value);
     const cure1_g = meat_g * (CURE1_PCT / 100);
 
-    // Premix math: total salt target after counting salt inside Cure #1.
     const desired_salt_g  = meat_g * (SALT_PCT  / 100);
     const desired_sugar_g = meat_g * (SUGAR_PCT / 100);
-    const cure1_salt_g    = cure1_g * (1 - CURE_NITRITE_PCT / 100); // ~93.75% salt
+    const cure1_salt_g    = cure1_g * (1 - CURE_NITRITE_PCT / 100);
     const adjusted_plain_salt_g = Math.max(0, desired_salt_g - cure1_salt_g);
     const premix_g = adjusted_plain_salt_g + desired_sugar_g;
 
-    // Render table (ORDER: Meat → Premix → Cure #1)
     resultsEl.innerHTML = '';
     resultsEl.appendChild(row('Meat (input)', meat_g, gToLb(meat_g)));
     resultsEl.appendChild(row('Premix', premix_g, gToLb(premix_g)));
     resultsEl.appendChild(row(`Cure #1 (${CURE1_PCT.toFixed(3)}% of meat)`, cure1_g, gToLb(cure1_g)));
 
-    // enable button after first valid calc to signal readiness
     calcBtn.disabled = false;
   }
 
-  // Enable/disable button based on input
   function onInput(){
     const val = parseFloat(meatEl.value);
     calcBtn.disabled = !(val > 0);
@@ -294,12 +261,11 @@
   }
 
   calcBtn.addEventListener('click', calculate);
-  document.addEventListener('keydown', (e) => { if(e.key === 'Enter') calculate(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Enter') calculate(); });
   meatEl.addEventListener('input', onInput);
   unitEl.addEventListener('change', () => { if(parseFloat(meatEl.value)>0) calculate(); });
 
-  // initial
-  renderDisabledState();
+  renderDisabled();
 })();
 </script>
 </body>
