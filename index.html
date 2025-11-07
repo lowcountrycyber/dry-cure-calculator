@@ -15,7 +15,6 @@
     --accent-dark:#dc2626;    /* darker red (hover) */
     --line:#1f2937;           /* deep divider */
     --line-strong:#b91c1c;    /* red divider */
-    --head:#111827;           /* header bg */
     --row:#0b0b0b;            /* zebra row 1 */
     --row-alt:#101010;        /* zebra row 2 */
   }
@@ -112,25 +111,24 @@
   .credit a{color:#f87171; text-decoration:none; border-bottom:1px solid rgba(248,113,113,.4)}
   .credit a:hover{color:#fecaca; border-bottom-color:#fecaca}
 
-  /* POWERED BY bar */
+  /* FOOTER banner */
   .powered{
     margin-top:12px; background:#000; border-radius:10px;
     border:1px solid rgba(239,68,68,.3);
-    display:flex; align-items:center; justify-content:center; gap:12px;
+    display:flex; align-items:center; justify-content:center;
     padding:10px 12px;
   }
-  .powered strong{letter-spacing:.08em; color:#fff}
-  .powered a{display:inline-flex; align-items:center; gap:8px; text-decoration:none}
-  .powered img{height:22px; width:auto; object-fit:contain}
+  .powered a{display:inline-flex}
+  .powered img{height:28px; width:auto; object-fit:contain}
 </style>
 </head>
 <body>
   <div class="card">
 
-    <!-- Top brand logo (placeholder) -->
+    <!-- Top brand logo (now links to Castle Road Barbecue) -->
     <div class="brand">
-      <a href="#" aria-label="Hog Heaven Home">
-        <img src="PATH/TO/hog-heaven-logo.png" alt="Hog Heaven">
+      <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener" aria-label="Castle Road Barbecue">
+        <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png" alt="Castle Road Barbecue">
       </a>
     </div>
 
@@ -178,12 +176,10 @@
       Developed by <a href="https://lowcountrycyber.net" target="_blank" rel="noopener">Low Country Cyber Solutions LLC</a>
     </div>
 
-    <!-- POWERED BY strip with placeholder logo -->
+    <!-- Footer banner (image only) -> links to ghostcooks.com -->
     <div class="powered" role="contentinfo">
-      <strong>POWERED&nbsp;BY</strong>
-      <a href="https://lowcountrycyber.github.io/" target="_blank" rel="noopener" aria-label="Low Country Cyber Solutions">
-        <img src="PATH/TO/lccs-logo.png" alt="LCCS Logo">
-        <span class="muted" style="color:#e5e7eb">Low Country Cyber Solutions LLC</span>
+      <a href="https://ghostcooks.com" target="_blank" rel="noopener" aria-label="Ghost Cooks">
+        <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/GHOST-COOKS-Powered-BY-RED-scaled.png" alt="Ghost Cooks">
       </a>
     </div>
   </div>
