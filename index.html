@@ -7,7 +7,7 @@
 <style>
   /* ===== Friday the 13th theme (black + blood red) ===== */
   :root{
-    --bg:#000000;             /* pitch black base (behind wood texture) */
+    --bg:#000000;             /* pitch black */
     --card:#0a0a0a;           /* near-black panel */
     --ink:#e5e7eb;            /* light gray text */
     --muted:#9ca3af;          /* muted gray */
@@ -20,201 +20,301 @@
   }
 
   html,body{height:100%}
-
-  /* Wood background + subtle dark overlay to keep contrast */
   body{
-    margin:0;color:var(--ink);
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
-    text-align:right; /* right-justify */
-    background:
-      linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
-      url("https://castleroadbarbecue.com/wp-content/uploads/2023/04/wood-bkg-for-castle-rd-3.png") center/cover fixed no-repeat,
-      var(--bg);
+    margin:0;background:var(--bg);
+    font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+    color:var(--ink); display:grid; place-items:center; padding:22px;
   }
 
-  .wrap{min-height:100%;display:flex;flex-direction:column}
-  .container{
-    width:clamp(320px, 92vw, 980px);
-    margin:16px 16px 80px auto;   /* push content to the RIGHT edge */
-  }
-
-  /* Header banner (Hog Heaven) */
-  .banner{
-    background:#0b0b0b;border:1px solid var(--line);border-radius:14px;
-    padding:14px;display:flex;justify-content:flex-end;align-items:center;margin-bottom:16px
-  }
-  .banner img{max-width:100%;height:auto;display:block;margin-left:auto}
-
-  /* Red divider “page break” */
-  .break{
-    height:0;border:none;border-top:2px solid var(--line-strong);
-    margin:18px 0;
-  }
-  /* Real page breaks when printing */
-  @media print{
-    .page-break{break-before: page;}
-    .powered, .credit{break-before: page;}
-  }
-
-  /* Card */
   .card{
-    background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:16px 16px 12px;box-shadow:0 0 0 1px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.35)
+    width:min(760px,100%); background:var(--card); border-radius:14px;
+    box-shadow:0 18px 40px rgba(0,0,0,.7), 0 0 0 1px rgba(239,68,68,.15);
+    padding:16px 22px 16px; position:relative; overflow:hidden;
   }
-  .card h2{
-    margin:0 0 6px;font-weight:800;letter-spacing:.6px;color:var(--accent)
-  }
-  .subtitle{color:var(--muted);font-size:.925rem;margin-bottom:8px}
-  .field-label{font-weight:600;margin:10px 0 6px}
 
-  /* Stacked input/select block (right aligned) */
-  .stacked{
-    display:flex;flex-direction:column;gap:10px;max-width:460px;margin-left:auto;
+  /* ------ Top brand logo: full width to match table ------ */
+  .brand{padding:0 0 14px; border-bottom:1px solid rgba(239,68,68,.15); margin-bottom:12px}
+  .brand a{display:block; width:100%; text-decoration:none}
+  .brand img{
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    border-radius:10px;
   }
-  .input, .select, .btn{
-    font:inherit;color:var(--ink);background:#0c0c0c;border:1px solid var(--line);
-    border-radius:10px;padding:11px 12px;outline:none;text-align:right;
-  }
-  .input:focus, .select:focus{border-color:var(--line-strong);box-shadow:0 0 0 2px rgba(185,28,28,.25)}
-  .btn{
-    width:max-content;background:var(--accent);border-color:var(--accent);
-    cursor:pointer;font-weight:700;padding:10px 14px;border-radius:12px;margin-left:auto;
-  }
-  .btn:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
 
-  /* Table */
-  .table{
-    width:100%;border-collapse:separate;border-spacing:0;margin-top:14px;overflow:hidden;border-radius:12px;
-    border:1px solid var(--line-strong)
+  /* ===== Wood band behind the widget ===== */
+  .band{
+    margin:12px -10px 0;             /* slight edge bleed */
+    padding:16px 12px;
+    border-radius:10px;
+    border:1px solid rgba(239,68,68,.15);
+    background-image:
+      linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.62)),
+      url('https://castleroadbarbecue.com/wp-content/uploads/2023/04/wood-bkg-for-castle-rd-3.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
   }
-  .table thead th{
-    text-align:right;background:#0c0c0c;color:#eaeaea;padding:10px 12px;border-bottom:1px solid var(--line-strong)
-  }
-  .table tbody tr:nth-child(odd){background:var(--row)}
-  .table tbody tr:nth-child(even){background:var(--row-alt)}
-  .table td{padding:10px 12px;border-bottom:1px solid #121212;text-align:right}
-  .meta{font-size:.8rem;color:var(--muted);text-align:right;margin-top:8px}
 
-  /* Footer image (Ghost Cooks Powered By) */
-  .powered{
-    width:100%;display:flex;justify-content:flex-end;align-items:center;
-    margin:28px 0 10px;
+  h1{
+    margin:4px 0 6px; font-size:26px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--accent);
+    text-shadow:0 0 10px rgba(239,68,68,.3), 0 0 2px rgba(239,68,68,.6);
   }
-  .powered img{
-    max-width:min(100%, 720px);height:auto;display:block;margin-left:auto;
-    filter:drop-shadow(0 0 6px rgba(239,68,68,.35));
+  .sub{color:var(--muted); margin-bottom:16px; font-size:14px}
+  .sub strong{color:var(--ink)}
+  .sub .note{color:var(--accent); opacity:.8}
+
+  .grid{display:grid; grid-template-columns: 1fr auto 140px; gap:12px; align-items:center}
+  .grid label{font-weight:700; color:var(--ink)}
+  input[type="number"], select{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:16px;
+    background:#0f0f10; color:var(--ink); outline:none;
   }
-  .credit{color:#8b8b8b;text-align:right;font-size:.85rem;margin-top:8px}
+  input[type="number"]:focus, select:focus{border-color:var(--accent); box-shadow:0 0 0 2px rgba(239,68,68,.25)}
+
+  .btns{
+    margin:12px 0 8px; display:flex; align-items:center; gap:10px; width:100%;
+  }
+  .btns button{
+    appearance:none; border:0; border-radius:10px; padding:10px 14px; font-weight:800;
+    background:var(--accent); color:#fff; cursor:pointer; letter-spacing:.02em;
+    box-shadow:0 6px 18px rgba(239,68,68,.35);
+    margin-left:auto;           /* >>> push button to the far right <<< */
+  }
+  .btns button:hover{background:var(--accent-dark)}
+  .btns button:active{transform:translateY(1px)}
+  .btns button[disabled]{opacity:.5; cursor:not-allowed; box-shadow:none}
+
+  .muted{color:var(--muted); font-size:12px}
+
+  /* ===== Table ===== */
+  .table-wrap{margin-top:14px}
+  table{
+    width:100%; border-collapse:separate; border-spacing:0;
+    border:1px solid var(--line-strong); border-radius:10px; overflow:hidden;
+    background:#0b0b0b;
+  }
+  colgroup col.item{width:auto}
+  colgroup col.g{width:220px}
+  colgroup col.lb{width:140px}
+
+  thead th{
+    background:linear-gradient(180deg,#111827 0%, #0d0d0d 100%);
+    padding:12px 14px; font-weight:800; color:#fef2f2;
+    border-bottom:1px solid var(--line-strong);
+    text-align:left; text-transform:uppercase; letter-spacing:.05em;
+  }
+  thead th.num{text-align:right}
+
+  tbody tr:nth-child(odd){background:var(--row)}
+  tbody tr:nth-child(even){background:var(--row-alt)}
+
+  td{
+    padding:12px 14px; border-bottom:1px solid var(--line);
+    vertical-align:middle; color:var(--ink);
+  }
+  tbody tr:last-child td{border-bottom:0}
+
+  .num{
+    text-align:right;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .01em;
+  }
+
+  /* small developer credit */
+  .credit{margin-top:12px; text-align:right; color:#fca5a5; font-size:12px}
+  .credit a{color:#f87171; text-decoration:none; border-bottom:1px solid rgba(248,113,113,.4)}
+  .credit a:hover{color:#fecaca; border-bottom-color:#fecaca}
+
+  /* ===== Footer banner ===== */
+  .footer{
+    margin-top:16px;
+    padding-top:12px;
+    border-top:1px solid rgba(239,68,68,.15);
+  }
+  .footer a{display:block;width:100%;text-decoration:none}
+  .footer img{
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:cover;
+    border-radius:10px;
+  }
+
+  /* Small screens: keep layout tight and button right-aligned */
+  @media (max-width: 480px){
+    .grid{grid-template-columns: 1fr 1fr; grid-auto-rows:auto}
+    .grid label{grid-column:1 / -1}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="container">
+  <div class="card">
 
-    <!-- Hog Heaven banner -->
-    <div class="banner">
-      <img
-        src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png"
-        alt="Hog Heaven — Signature Banner" />
+    <!-- Top brand logo (links to Castle Road Barbecue; full-width PNG) -->
+    <div class="brand">
+      <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener" aria-label="Castle Road Barbecue">
+        <img src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/Castle-Road-Hog-Heaven-Signature-Plain-1.png" alt="Castle Road Barbecue">
+      </a>
     </div>
 
-    <hr class="break">
+    <!-- Wood-backed band with the calculator UI -->
+    <div class="band" aria-label="Dry Cure calculator banded section">
+      <h1>Dry Cure Calculator</h1>
+      <div class="sub">
+        Cure #1 @ <strong>0.25%</strong> • <strong>Premix</strong> @ <strong>3.10%</strong>
+        <span class="note">(auto salt adjustment)</span>
+      </div>
 
-    <div class="card">
-      <h2>DRY CURE CALCULATOR</h2>
-      <div class="subtitle">Cure #1 @ <strong>0.25%</strong> • Premix @ <strong>3.10%</strong> <span style="opacity:.8">(auto salt adjustment)</span></div>
-
-      <div class="field-label">Meat Weight</div>
-
-      <!-- Stacked controls -->
-      <div class="stacked">
-        <input id="meat" class="input" type="number" step="0.01" min="0" placeholder="Enter weight (e.g., 75)" />
-        <select id="unit" class="select" aria-label="Measurement Unit">
-          <option value="lb">lb (default)</option>
-          <option value="g">g</option>
+      <div class="grid" role="form" aria-label="dry cure form">
+        <label for="meat">Meat Weight</label>
+        <input id="meat" type="number" min="0" step="0.01" value="0" inputmode="decimal" />
+        <select id="unit" aria-label="weight unit">
+          <option value="lb" selected>lb (default)</option>
           <option value="kg">kg</option>
+          <option value="g">g</option>
+          <option value="oz">oz</option>
         </select>
       </div>
 
-      <div style="margin-top:12px">
-        <button class="btn" id="calc">Calculate</button>
+      <div class="btns">
+        <span id="hint" class="muted" aria-live="polite">Enter a weight to calculate.</span>
+        <button id="calcBtn" disabled>Calculate</button>
       </div>
 
-      <table class="table" aria-describedby="results-caption">
-        <caption id="results-caption" style="position:absolute;left:-9999px">Cure calculation results</caption>
-        <thead>
-          <tr><th>ITEM</th><th>G</th><th>LB</th></tr>
-        </thead>
-        <tbody id="rows">
-          <tr><td>Meat (input)</td><td id="meat_g">—</td><td id="meat_lb">—</td></tr>
-          <tr><td>Premix</td><td id="premix_g">—</td><td id="premix_lb">—</td></tr>
-          <tr><td>Cure #1 (0.250% of meat)</td><td id="cure_g">—</td><td id="cure_lb">—</td></tr>
-        </tbody>
-      </table>
+      <div class="table-wrap">
+        <table aria-live="polite">
+          <colgroup>
+            <col class="item" />
+            <col class="g" />
+            <col class="lb" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="num">g</th>
+              <th class="num">lb</th>
+            </tr>
+          </thead>
+          <tbody id="results"></tbody>
+        </table>
+      </div>
 
-      <div class="meta">
-        Developed by
-        <a href="https://lowcountrycyber.net" target="_blank" rel="noopener" style="color:#f87171;text-decoration:none">Low Country Cyber Solutions LLC</a>
+      <div class="credit">
+        Developed by <a href="https://lowcountrycyber.net" target="_blank" rel="noopener">Low Country Cyber Solutions LLC</a>
       </div>
     </div>
 
-    <hr class="break page-break">
-
-    <!-- Ghost Cooks Powered By footer -->
-    <div class="powered">
-      <img
-        src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/GHOST-COOKS-Powered-BY-RED-scaled.png"
-        alt="Powered By — Ghost Cooks" />
+    <!-- ===== Footer banner ===== -->
+    <div class="footer" aria-label="Castle Road Barbecue footer banner">
+      <a href="https://castleroadbarbecue.com" target="_blank" rel="noopener">
+        <img
+          src="https://castleroadbarbecue.com/wp-content/uploads/2025/11/GHOST-COOKS-Powered-BY-RED-scaled.png"
+          alt="Castle Road Barbecue — Hog Heaven"
+          loading="lazy"
+        />
+      </a>
     </div>
 
-    <div class="credit">© <script>document.write(new Date().getFullYear())</script> Low Country Cyber Solutions LLC</div>
   </div>
-</div>
 
 <script>
-  /* ===== Math ===== */
-  const PERCENT_PREMIX = 0.0310;  // 3.10%
-  const PERCENT_CURE   = 0.0025;  // 0.25%
-  const G_PER_LB = 453.59237;
+(() => {
+  // ---- constants & helpers ----
+  const LB_TO_G = 453.59237;
+  const OZ_TO_G = 28.349523125;
 
-  const $ = (id)=>document.getElementById(id);
-  const fmt = (v, d=2)=> isFinite(v) ? Number(v).toFixed(d) : '—';
+  // Defaults (% of meat)
+  const CURE1_PCT = 0.25;   // Cure #1 flat percent of meat
+  const SALT_PCT  = 1.75;
+  const SUGAR_PCT = 1.35;
+  const CURE_NITRITE_PCT = 6.25;  // for salt fraction math only
 
-  function toGrams(weight, unit){
-    if(!isFinite(weight) || weight <= 0) return 0;
+  const $ = sel => document.querySelector(sel);
+  const meatEl = $('#meat');
+  const unitEl = $('#unit');
+  const resultsEl = $('#results');
+  const calcBtn = $('#calcBtn');
+  const hintEl = $('#hint');
+
+  function toGrams(value, unit){
     switch(unit){
-      case 'g':  return weight;
-      case 'kg': return weight * 1000;
-      case 'lb': default: return weight * G_PER_LB;
+      case 'g':  return value;
+      case 'kg': return value * 1000;
+      case 'lb': return value * LB_TO_G;
+      case 'oz': return value * OZ_TO_G;
+      default:   return value * LB_TO_G;
     }
   }
+  function gToLb(g){ return g / LB_TO_G; }
+  const r2 = x => Math.round((+x + Number.EPSILON) * 100) / 100;
 
-  function render(meatG){
-    const meatLb   = meatG / G_PER_LB;
-    const premixG  = meatG * PERCENT_PREMIX;
-    const cureG    = meatG * PERCENT_CURE;
+  function row(label, g, lb){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${label}</td>
+                    <td class="num">${r2(g)}</td>
+                    <td class="num">${r2(lb)}</td>`;
+    return tr;
+  }
 
-    $('meat_g').textContent   = fmt(meatG, 2);
-    $('meat_lb').textContent  = fmt(meatLb, 0);
-
-    $('premix_g').textContent = fmt(premixG, 2);
-    $('premix_lb').textContent= fmt(premixG / G_PER_LB, 2);
-
-    $('cure_g').textContent   = fmt(cureG, 2);
-    $('cure_lb').textContent  = fmt(cureG / G_PER_LB, 2);
+  function renderDisabledState(){
+    resultsEl.innerHTML = '';
+    calcBtn.disabled = true;
+    hintEl.textContent = 'Enter a weight to calculate.';
   }
 
   function calculate(){
-    const w = parseFloat($('meat').value);
-    const u = $('unit').value || 'lb';
-    render(toGrams(w, u));
+    const val = parseFloat(meatEl.value);
+    if (isNaN(val) || val <= 0){
+      renderDisabledState();
+      return;
+    }
+    const meat_g = toGrams(val, unitEl.value);
+
+    // Cure #1 (flat %)
+    const cure1_g = meat_g * (CURE1_PCT / 100);
+
+    // Premix math: total salt target after counting salt inside Cure #1.
+    const desired_salt_g  = meat_g * (SALT_PCT  / 100);
+    const desired_sugar_g = meat_g * (SUGAR_PCT / 100);
+    const cure1_salt_g    = cure1_g * (1 - CURE_NITRITE_PCT / 100); // ~93.75% salt
+    const adjusted_plain_salt_g = Math.max(0, desired_salt_g - cure1_salt_g);
+    const premix_g = adjusted_plain_salt_g + desired_sugar_g;
+
+    // Render table (ORDER: Meat → Premix → Cure #1)
+    resultsEl.innerHTML = '';
+    resultsEl.appendChild(row('Meat (input)', meat_g, gToLb(meat_g)));
+    resultsEl.appendChild(row('Premix', premix_g, gToLb(premix_g)));
+    resultsEl.appendChild(row(`Cure #1 (${CURE1_PCT.toFixed(3)}% of meat)`, cure1_g, gToLb(cure1_g)));
+
+    // UI state
+    calcBtn.disabled = false;
+    hintEl.textContent = 'Press Enter to recalculate.';
   }
 
-  $('calc').addEventListener('click', calculate);
+  // Enable button dynamically (kept on the right via CSS)
+  function onInput(){
+    const val = parseFloat(meatEl.value);
+    calcBtn.disabled = !(val > 0);
+    if (val > 0){
+      hintEl.textContent = 'Press Enter to calculate.';
+    }else{
+      hintEl.textContent = 'Enter a weight to calculate.';
+      resultsEl.innerHTML = '';
+    }
+  }
 
-  // Seed demo
-  $('meat').value = '75';
-  calculate();
+  calcBtn.addEventListener('click', calculate);
+  document.addEventListener('keydown', (e) => { if(e.key === 'Enter') calculate(); });
+  meatEl.addEventListener('input', onInput);
+  unitEl.addEventListener('change', () => { if(parseFloat(meatEl.value)>0) calculate(); });
+
+  // initial: disabled state (weight defaults to 0)
+  renderDisabledState();
+})();
 </script>
 </body>
 </html>
